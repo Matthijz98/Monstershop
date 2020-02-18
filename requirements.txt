@@ -1,0 +1,4 @@
+gunicorn
+django
+psycopg2-binary
+sentry-sdk
