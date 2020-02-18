@@ -30,6 +30,17 @@ if DJANGO_DEBUG == 'True':
     DEBUG = True
 else:
     DEBUG = False
+#sentry
+SENTRY_ENABLE = os.getenv('SENTRY_ENABLE', 'True')
+SENTRY_DSN = os.getenv('SENTRY_DSN', 'https://94a45fc3441240079087251ce46f04fb@sentry.io/2640972')
+if SENTRY_ENABLE == 'True':
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+    )
 
 #####################
 # security settings #
