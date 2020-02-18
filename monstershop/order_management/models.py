@@ -33,6 +33,12 @@ class Order(models.Model):
     updated_at = models.DateTimeField()
 
 
+class OrderDetail(models.Model):
+    order_details_order = models.ForeignKey(Order, on_delete=models.PROTECT)
+    order_details_product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    order_details_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    order_details_discount = models.DecimalField(max_digits=10, decimal_places=2)
+
 class Shipment(models.Model):
     shipment_of_order = models.ForeignKey(Order, on_delete=models.PROTECT)
     shipment_tracking_code = models.CharField(max_length=128)
