@@ -22,10 +22,21 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '2s)l@cyf%82unp2@k25%2j=*m*!0d+xn1gl+v73n)zwz=c(tj0'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+##################
+# Debug settings #
+##################
+DJANGO_DEBUG = os.getenv('DJANGO_DEBUG', 'False')
+if DJANGO_DEBUG == 'True':
+    DEBUG = True
+else:
+    DEBUG = False
 
-ALLOWED_HOSTS = []
+#####################
+# security settings #
+#####################
+DJANGO_ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS',  '*')
+
+ALLOWED_HOSTS = [DJANGO_ALLOWED_HOSTS]
 
 
 # Application definition
