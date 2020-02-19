@@ -2,8 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from product_management.models import Product
 
-class Country(models.Model):
+
+class Countrie(models.Model):
     country_name = models.CharField(max_length=128)
+
 
 class Address(models.Model):
     address_from_user = models.ForeignKey(User, on_delete=models.PROTECT)
@@ -13,7 +15,7 @@ class Address(models.Model):
     address_region = models.CharField(max_length=128)
     address_phone = models.IntegerField()
     address_zip_code = models.CharField(max_length=8)
-    address_county = models.ForeignKey(Country, on_delete=models.PROTECT)
+    address_county = models.ForeignKey(Countrie, on_delete=models.PROTECT)
 
 
 class Shipper(models.Model):
