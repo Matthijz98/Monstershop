@@ -26,8 +26,6 @@ class Product(models.Model):
     product_description = models.TextField()
     product_min_order_amount = models.FloatField(default=0)
     product_max_order_amount = models.FloatField(null=True, blank=True)
-    product_reorder_level = models.FloatField()
-    product_out_of_stock_date = models.DateTimeField(null=True, blank=True)
     product_created_at = models.DateTimeField()
     product_updated_at = models.DateTimeField()
     product_price = models.DecimalField(decimal_places=2, max_digits=10)
