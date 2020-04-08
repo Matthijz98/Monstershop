@@ -14,6 +14,7 @@ class ProductCategory(models.Model):
             k = k.parent
         return ' -> '.join(full_path[::-1])
 
+
 class ProductBrand(models.Model):
     product_brand_name = models.CharField(max_length=128)
     product_brand_img = FilerImageField(null=True, blank=True, related_name="product_brand_img", on_delete=models.CASCADE)
@@ -29,6 +30,7 @@ class Product(models.Model):
     product_out_of_stock_date = models.DateTimeField(null=True, blank=True)
     product_created_at = models.DateTimeField()
     product_updated_at = models.DateTimeField()
+    product_price = models.DecimalField(decimal_places=2, max_digits=10)
 
 
 class ProductField(models.Model):
