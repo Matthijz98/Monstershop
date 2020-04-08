@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, ProductFieldDetails, ProductField, ProductImg
+from .models import Product, ProductFieldDetails, ProductField, ProductImg, ProductCategory
 
 
 class ProductFieldDetailsAdmin(admin.StackedInline):
@@ -20,3 +20,4 @@ class ProductAdmin(admin.ModelAdmin):
 # Register your models here.
 admin.site.register(Product, ProductAdmin)
 admin.site.register(ProductField)
+admin.site.register(ProductCategory)
