@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -22,10 +22,32 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '2s)l@cyf%82unp2@k25%2j=*m*!0d+xn1gl+v73n)zwz=c(tj0'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+##################
+# Debug settings #
+##################
+DJANGO_DEBUG = os.getenv('DJANGO_DEBUG', 'False')
+if DJANGO_DEBUG == 'True':
+    DEBUG = True
+else:
+    DEBUG = False
+#sentry
+SENTRY_ENABLE = os.getenv('SENTRY_ENABLE', 'True')
+SENTRY_DSN = os.getenv('SENTRY_DSN', 'https://94a45fc3441240079087251ce46f04fb@sentry.io/2640972')
+if SENTRY_ENABLE == 'True':
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
 
-ALLOWED_HOSTS = []
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()],
+    )
+
+#####################
+# security settings #
+#####################
+DJANGO_ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS',  '*')
+
+ALLOWED_HOSTS = [DJANGO_ALLOWED_HOSTS]
 
 
 # Application definition
@@ -40,10 +62,14 @@ INSTALLED_APPS = [
     'order_management',
     'product_management',
     'stock_management',
+    'easy_thumbnails',
+    'filer',
+    'mptt',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -72,16 +98,34 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'monstershop.wsgi.application'
 
+############
+# Database #
+############
+DB_TYPE = os.getenv('DB_TYPE', 'sqlite')
+DB_NAME = os.getenv('DB_NAME', 'monstershop')
+DB_USER = os.getenv('DB_USER', 'monstershop')
+DB_PASSWORD = os.getenv('DB_PASSWORD', 'Password')
+DB_HOST = os.getenv('DB_HOST', 'localhost')
+DB_PORT = os.getenv('DB_PORT', 5432)
 
-# Database
-# https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+if DB_TYPE == 'postgressql':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': DB_NAME,
+            'USER': DB_NAME,
+            'PASSWORD': DB_PASSWORD,
+            'HOST': DB_HOST,
+            'PORT': DB_PORT,
+        }
     }
-}
+elif DB_TYPE == 'sqlite':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
@@ -116,8 +160,23 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+##########################################
+# Static files (CSS, JavaScript, Images) #
+##########################################
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+
+##################
+# Filer settings #
+##################
+THUMBNAIL_HIGH_RESOLUTION = True
+
+THUMBNAIL_PROCESSORS = (
+    'easy_thumbnails.processors.colorspace',
+    'easy_thumbnails.processors.autocrop',
+    #'easy_thumbnails.processors.scale_and_crop',
+    'filer.thumbnail_processors.scale_and_crop_with_subject_location',
+    'easy_thumbnails.processors.filters',
+)

@@ -1,2 +1,8 @@
 
 .idea/
+
+*.pyc
+
+monstershop/filer_public_thumbnails/
+
+monstershop/filer_public/
