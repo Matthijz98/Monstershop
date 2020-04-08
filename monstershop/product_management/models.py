@@ -1,4 +1,5 @@
 from django.db import models
+from filer.fields.image import FilerImageField
 
 
 class ProductCategory(models.Model):
@@ -28,5 +29,6 @@ class ProductFieldDetails(models.Model):
 
 
 class ProductImg(models.Model):
-    product_img_name = models.CharField(max_length=128)
+    product_img_product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product_img_img = FilerImageField(null=True, blank=True, related_name="product_img", on_delete=models.CASCADE)
     product_img_alt_text = models.CharField(max_length=64)
