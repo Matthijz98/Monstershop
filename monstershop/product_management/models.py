@@ -4,6 +4,19 @@ from filer.fields.image import FilerImageField
 
 class ProductCategory(models.Model):
     product_category_name = models.CharField(max_length=128)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name="childs", on_delete=models.CASCADE)
+
+    def __str__(self):
+        full_path = [self.product_category_name]
+        k = self.parent
+        while k is not None:
+            full_path.append(k.product_category_name)
+            k = k.parent
+        return ' -> '.join(full_path[::-1])
+
+class ProductBrand(models.Model):
+    product_brand_name = models.CharField(max_length=128)
+    product_brand_img = FilerImageField(null=True, blank=True, related_name="product_brand_img", on_delete=models.CASCADE)
 
 
 class Product(models.Model):
