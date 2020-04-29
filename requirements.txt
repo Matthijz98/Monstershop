@@ -9,3 +9,4 @@ easy_thumbnails
 django-polymorphic
 Pillow
 django-filer
+django-totalsum-admin

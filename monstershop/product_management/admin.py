@@ -11,6 +11,7 @@ class ProductImgAdmin(admin.StackedInline):
 
 
 class ProductAdmin(admin.ModelAdmin):
+    list_display = ["product_name", "product_brand", "product_price", "product_category"]
     inlines = [
         ProductFieldDetailsAdmin,
         ProductImgAdmin
