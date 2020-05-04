@@ -3,8 +3,13 @@ from .models import Order, OrderDetail, Countrie, Shipper, Shipment, ShipmentDet
 from totalsum.admin import TotalsumAdmin
 
 
-class OrderDetailsAdmin(admin.StackedInline):
+class OrderDetailsAdmin(admin.TabularInline):
     model = OrderDetail
+    autocomplete_fields = ["order_detail_product"]
+
+
+class AdressAdmin(admin.ModelAdmin):
+    search_fields = ["address_street_name"]
 
 
 class OrderAdmin(TotalsumAdmin):
@@ -14,6 +19,7 @@ class OrderAdmin(TotalsumAdmin):
     ]
     totalsum_list = ['order_total']
     unit_of_measure = '&euro;'
+    autocomplete_fields = ["order_shipping_address", "order_invoice_address"]
 
 
 class ShipmentDetailsAdmin(admin.StackedInline):
@@ -33,5 +39,5 @@ admin.site.register(Order, OrderAdmin)
 admin.site.register(Countrie)
 admin.site.register(Shipper)
 admin.site.register(Shipment, ShipmentAdmin)
-admin.site.register(Address)
+admin.site.register(Address, AdressAdmin)
 admin.site.register(OrderDetail)
