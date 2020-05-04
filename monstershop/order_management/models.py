@@ -14,12 +14,14 @@ class Countrie(models.Model):
 
 class Address(models.Model):
     address_from_user = models.ForeignKey(User, on_delete=models.PROTECT)
+    address_first_name = models.CharField(max_length=256)
+    address_last_name = models.CharField(max_length=256)
     address_street_name = models.CharField(max_length=256)
-    address_company_name = models.CharField(max_length=128)
+    address_company_name = models.CharField(max_length=128, blank=True, null=True)
     address_house_nr = models.CharField(max_length=10)
     address_region = models.CharField(max_length=128)
     address_place_name = models.CharField(max_length=128)
-    address_phone = models.IntegerField()
+    address_phone = models.IntegerField(max_length=64, null=True, blank=True)
     address_zip_code = models.CharField(max_length=8)
     address_county = models.ForeignKey(Countrie, on_delete=models.PROTECT)
 

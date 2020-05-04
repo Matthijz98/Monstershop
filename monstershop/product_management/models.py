@@ -1,5 +1,6 @@
 from django.db import models
 from filer.fields.image import FilerImageField
+# from order_management.models import OrderDetail
 
 
 class ProductCategory(models.Model):

@@ -16,7 +16,7 @@ class ProductAdmin(admin.ModelAdmin):
         ProductFieldDetailsAdmin,
         ProductImgAdmin
     ]
-
+    search_fields = ["product_name"]
 
 # Register your models here.
 admin.site.register(Product, ProductAdmin)
